@@ -5,7 +5,12 @@ var fs = require('fs'),
 
 var apps = {};
 
-module.exports.load = function(wrk_dir){
+module.exports.load = function(wrk_dir, options){
+	options = options || {};
+	
+	//console.log('load.options');
+	//console.log(options);
+	
 	fs.readdirSync(wrk_dir).forEach(function(file) {
 
 		var full_path = path.join(wrk_dir, file);
@@ -43,7 +48,7 @@ module.exports.load = function(wrk_dir){
 						if(typeOf(app) == 'class'){//mootools class
 							//console.log('class app');
 							
-							var instance = new app();
+							var instance = new app(options);
 							
 							/*//console.log('mootols_app.params:');
 							//console.log(Object.clone(instance.params));*/
@@ -81,7 +86,7 @@ module.exports.load = function(wrk_dir){
 				}
 				
 				if(typeOf(app) == 'class'){//mootools class
-					var instance = new app();
+					var instance = new app(options);
 					app = instance.express();
 					id = (instance.id) ? instance.id : id;
 				}
